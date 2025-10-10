@@ -3,14 +3,15 @@
     "name": "Obsidian Scholar Helper",
     "version": "1.0",
     "description": "Helps ingest paper data from sources beyond what the Obsidian Scholar plugin supports.",
+    "homepage_url": "https://github.com/MichaelKintscher/obsidian-scholar-helper/",
     "icons": {
         "48": "icons/icon_48.svg",
         "96": "icons/icon_96.svg"
     },
-    "content_scripts": [
-        {
-            "matches": ["*://*.ieeexplore.ieee.org/*"],
-            "js": ["main.js"]
-        }
-    ]
+    "permissions": ["activeTab"],
+    "browser_action": {
+        "default_icon": "icons/icon_32.svg",
+        "default_title": "Obsidian Scholar Helper",
+        "default_popup": "popup/extract_paper.html"
+    }
 }
