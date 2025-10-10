@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+    "name": "Obsidian Scholar Helper",
+    "version": "1.0",
+    "description": "Helps ingest paper data from sources beyond what the Obsidian Scholar plugin supports.",
+    "icons": {
+        "48": "icons/icon_48.svg",
+        "96": "icons/icon_96.svg"
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://*.ieeexplore.ieee.org/*"],
+            "js": ["main.js"]
+        }
+    ]
+}
