@@ -17,6 +17,11 @@ function trimString(str) {
 	return str.replace(/\s+/g, " ").trim();
 }
 
+function getCiteKeyFromBibtex(bibtex) {
+	const match = bibtex.match(/@.*\{([^,]+)/);
+	return match ? match[1] : null;
+}
+
 //
 // ***********************************************************************************
 //                      MAIN FUNCTION
@@ -65,6 +70,7 @@ function trimString(str) {
         }
 
         paperData.bibtex = bibtex;
+        paperData.citekey = getCiteKeyFromBibtex(bibtex);
 
         console.log(paperData);
 
