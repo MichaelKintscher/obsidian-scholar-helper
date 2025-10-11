@@ -128,7 +128,6 @@ function trimString(str) {
 
         // Open the BibTex tab.
         var bibTexTab = document.querySelector("a.document-tab-link[title=\"BibTeX\"]");
-        bibTexTab.click();
 
         // The bibtex content takes a moment to load. Without delaying the execution,
         //      the content will not yet exist by the time this code tries to read it.
@@ -152,6 +151,7 @@ function trimString(str) {
             };
         });
         observer.observe(bibtexSource, { characterData: false, childList: true, attributes: false });
+        bibTexTab.click();
     }
 
     /**
