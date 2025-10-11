@@ -35,7 +35,7 @@ function trimString(str) {
     }
     window.hasRun = true;
 
-    function parseData(url) {
+    async function parseData(url) {
 
         // Validate the URL format.
         if (url.toLowerCase().includes(IEEE_URL_BASE) == false) {
@@ -94,7 +94,11 @@ function trimString(str) {
         var bibTexTab = document.querySelector("a.document-tab-link[title=\"BibTeX\"]");
         bibTexTab.click();
 
-        let bibtex = document.querySelector(".text.ris-text");
+        // The bibtex content takes a moment to load. Without delaying the execution,
+        //      the content will not yet exist by the time this code tries to read it.
+        await new Promise(r => setTimeout(r, 2000));
+        let bibtexInnerSource = document.querySelector("pre.text.ris-text");
+        let bibtex = bibtexInnerSource.innerText;
         console.log(bibtex);
 
         return {
@@ -111,9 +115,9 @@ function trimString(str) {
      * Listen for messages from the background script.
      * Call "insertBeast()" or "removeExistingBeasts()".
      */
-    browser.runtime.onMessage.addListener((message) => {
+    browser.runtime.onMessage.addListener(async (message) => {
         if (message.command === "hello") {
-            console.log(parseData(message.url));
+            console.log(await parseData(message.url));
         }
         else {
             console.log("huh");
