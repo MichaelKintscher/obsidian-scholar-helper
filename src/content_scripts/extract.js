@@ -133,7 +133,7 @@ function trimString(str) {
         // The bibtex content takes a moment to load. Without delaying the execution,
         //      the content will not yet exist by the time this code tries to read it.
         // This sets a mutation observer to watch for changes on the innerHTML of the
-        //      bibtex source container. Once the  
+        //      bibtex source container.
         var observer = new MutationObserver(function(mutationsList, observer) {
 
             // Create the paper data object.
@@ -151,7 +151,6 @@ function trimString(str) {
                 observer.disconnect();
             };
         });
-
         observer.observe(bibtexSource, { characterData: false, childList: true, attributes: false });
     }
 
