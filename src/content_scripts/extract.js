@@ -35,6 +35,43 @@ function trimString(str) {
     }
     window.hasRun = true;
 
+    // The event handler called when the asynchronous loads reading the content
+    //      depends on have completed. Returns true if the bibtex was successfully
+    //      read, or false otherwise.
+    function finishUp(paperData) {
+
+        let bibtexInnerSource = document.querySelector("pre.text.ris-text");
+        // Return if the inner source element does not exist. This means the
+        //      finishUp function was caused as the old content unloaded.
+        if (bibtexInnerSource == null) {
+            console.log("Inner Source was null. Skipping finishUp call.");
+            return false;
+        }
+
+        let bibtex = bibtexInnerSource.innerText;
+        // Return if the inner text does not begin with "@". This means the
+        //      finishUp function was caused by a different tab loading.
+        if (bibtex[0] != "@") {
+            console.log(`Source is not bibtex. Skipping finishUp call: \"${bibtex}\"`);
+
+            // Repeating the observer one time appears to work for some reason. The first
+            //      call to the finishUp function sometimes triggers on the first tab load
+            //      but fails to trigger on the tab load after the click on the Bibtex
+            //      tab. By clicking on the tab again, the observer will call this finishUp
+            //      function a second time.
+            var bibTexTab = document.querySelector("a.document-tab-link[title=\"BibTeX\"]");
+            bibTexTab.click();
+            return false;
+        }
+
+        paperData.bibtex = bibtex;
+
+        console.log(paperData);
+
+        return true;
+    }
+
+    // Parses paperData from the current page.
     async function parseData(url) {
 
         // Validate the URL format.
@@ -56,7 +93,6 @@ function trimString(str) {
         }
 
         let authors = [];
-        console.log(authorsSource);
         for (let i = 0; i < authorsSource.length; i++) {
             var authorName = authorsSource[i].querySelector("a span")?.innerHTML;
             
@@ -96,19 +132,27 @@ function trimString(str) {
 
         // The bibtex content takes a moment to load. Without delaying the execution,
         //      the content will not yet exist by the time this code tries to read it.
-        await new Promise(r => setTimeout(r, 2000));
-        let bibtexInnerSource = document.querySelector("pre.text.ris-text");
-        let bibtex = bibtexInnerSource.innerText;
-        console.log(bibtex);
+        // This sets a mutation observer to watch for changes on the innerHTML of the
+        //      bibtex source container. Once the  
+        var observer = new MutationObserver(function(mutationsList, observer) {
 
-        return {
-            title: trimString(title),
-            authors: authors,
-            url: trimString(url),
-            publicationDate: trimString(date),
-            abstract: trimString(abstract),
-            bibtex: bibtex
-        };
+            // Create the paper data object.
+            var paperData = {
+                title: trimString(title),
+                authors: authors,
+                url: trimString(url),
+                publicationDate: trimString(date),
+                abstract: trimString(abstract),
+                bibtex: ""
+            };
+            // Call the finish up function.
+            if (finishUp(paperData)) {
+                // Stop the observer from listening once the function returns true.
+                observer.disconnect();
+            };
+        });
+
+        observer.observe(bibtexSource, { characterData: false, childList: true, attributes: false });
     }
 
     /**
@@ -117,7 +161,7 @@ function trimString(str) {
      */
     browser.runtime.onMessage.addListener(async (message) => {
         if (message.command === "hello") {
-            console.log(await parseData(message.url));
+            await parseData(message.url);
         }
         else {
             console.log("huh");
