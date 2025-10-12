@@ -41,8 +41,8 @@ function getCiteKeyFromBibtex(bibtex) {
     window.hasRun = true;
 
     // The event handler called when the asynchronous loads reading the content
-    //      depends on have completed. Returns true if the bibtex was successfully
-    //      read, or false otherwise.
+    //      depends on have completed. Returns the paper data if the bibtex was
+    //      successfully read, or null otherwise.
     function finishUp(paperData) {
 
         let bibtexInnerSource = document.querySelector("pre.text.ris-text");
@@ -50,7 +50,7 @@ function getCiteKeyFromBibtex(bibtex) {
         //      finishUp function was caused as the old content unloaded.
         if (bibtexInnerSource == null) {
             console.log("Inner Source was null. Skipping finishUp call.");
-            return false;
+            return null;
         }
 
         let bibtex = bibtexInnerSource.innerText;
@@ -66,19 +66,18 @@ function getCiteKeyFromBibtex(bibtex) {
             //      function a second time.
             var bibTexTab = document.querySelector("a.document-tab-link[title=\"BibTeX\"]");
             bibTexTab.click();
-            return false;
+            return null;
         }
 
         paperData.bibtex = bibtex;
         paperData.citekey = getCiteKeyFromBibtex(bibtex);
+        //console.log(paperData);
 
-        console.log(paperData);
-
-        return true;
+        return paperData;
     }
 
     // Parses paperData from the current page.
-    async function parseData(url) {
+    async function parseData(url, finishedFunc) {
 
         // Validate the URL format.
         if (url.toLowerCase().includes(IEEE_URL_BASE) == false) {
@@ -155,9 +154,13 @@ function getCiteKeyFromBibtex(bibtex) {
                 bibtex: ""
             };
             // Call the finish up function.
-            if (finishUp(paperData)) {
+            var result = finishUp(paperData);
+            if (result != null) {
                 // Stop the observer from listening once the function returns true.
                 observer.disconnect();
+                console.log(result);
+                // Resolve the promise by calling the resolve function.
+                finishedFunc({ response: result });
             };
         });
         observer.observe(bibtexSource, { characterData: false, childList: true, attributes: false });
@@ -168,9 +171,12 @@ function getCiteKeyFromBibtex(bibtex) {
      * Listen for messages from the background script.
      * Call the parse data function.
      */
-    browser.runtime.onMessage.addListener(async (message) => {
+    browser.runtime.onMessage.addListener((message) => {
         if (message.command === "hello") {
-            await parseData(message.url);
+            return new Promise((finished, rejected) => {
+                
+                parseData(message.url, finished);
+            });
         }
         else {
             console.log("huh");

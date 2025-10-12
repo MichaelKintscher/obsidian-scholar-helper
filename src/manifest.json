@@ -8,7 +8,10 @@
         "48": "icons/icon_48.svg",
         "96": "icons/icon_96.svg"
     },
-    "permissions": ["activeTab"],
+    "permissions": [
+        "activeTab",
+        "downloads"
+    ],
     "browser_action": {
         "default_icon": "icons/icon_32.svg",
         "default_title": "Obsidian Scholar Helper",

@@ -12,6 +12,11 @@ function main() {
             browser.tabs.sendMessage(tabs[0].id, {
                 command: "hello",
                 url: tabs[0].url
+            })
+            .then((response) => {
+                // Open the Obsidian app with the paper data encoded into the url.
+                let url = encodeURI(`obsidian://scholar?${JSON.stringify(response.response)}`);
+                browser.tabs.create({ url: url });
             });
         }
 
@@ -19,15 +24,16 @@ function main() {
             console.log("oops");
         }
 
-        /**
-         * Get the active tab,
-         * then call "beastify()" or "reset()" as appropriate.
-         */
+        
         if (e.target.tagName !== "BUTTON" || !e.target.closest("#popup-content")) {
             // Ignore when click is not on a button within <div id="popup-content">.
             return;
         }
 
+        /**
+         * Get the active tab,
+         * then call the click function as appropriate.
+         */
         browser.tabs
             .query({ active: true, currentWindow: true })
             .then(onClick)
