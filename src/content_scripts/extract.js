@@ -5,7 +5,7 @@
 // ***********************************************************************************
 //
 
-const IEEE_URL_BASE = "https://ieeexplore.ieee.org/document/";
+const IEEE_URL_BASE = "https://ieeexplore.ieee.org/";
 
 // Functions in this section taken from Obsidian Scholar plugin:
 // https://github.com/lolipopshock/obsidian-scholar
@@ -43,7 +43,7 @@ function getCiteKeyFromBibtex(bibtex) {
     // The event handler called when the asynchronous loads reading the content
     //      depends on have completed. Returns the paper data if the bibtex was
     //      successfully read, or null otherwise.
-    function finishUp(paperData) {
+    function finishUpIEEE(paperData) {
 
         let bibtexInnerSource = document.querySelector("pre.text.ris-text");
         // Return if the inner source element does not exist. This means the
@@ -76,14 +76,7 @@ function getCiteKeyFromBibtex(bibtex) {
         return paperData;
     }
 
-    // Parses paperData from the current page.
-    async function parseData(url, finishedFunc) {
-
-        // Validate the URL format.
-        if (url.toLowerCase().includes(IEEE_URL_BASE) == false) {
-            console.log("Invalid url: " + url);
-            throw new Error("Invalid url: " + url);
-        }
+    async function parseDataIEEE(url, finishedFunc) {
 
         let title = document.querySelector("h1.document-title span")?.innerHTML;
         let abstract = document.querySelector("div.abstract-text h2 + div")?.innerHTML;
@@ -154,7 +147,7 @@ function getCiteKeyFromBibtex(bibtex) {
                 bibtex: ""
             };
             // Call the finish up function.
-            var result = finishUp(paperData);
+            var result = finishUpIEEE(paperData);
             if (result != null) {
                 // Stop the observer from listening once the function returns true.
                 observer.disconnect();
@@ -165,6 +158,22 @@ function getCiteKeyFromBibtex(bibtex) {
         });
         observer.observe(bibtexSource, { characterData: false, childList: true, attributes: false });
         bibTexTab.click();
+    }
+
+    // Parses paperData from the current page.
+    async function parseData(url, finishedFunc) {
+
+        // Validate the URL format.
+        if (url.toLowerCase().includes(IEEE_URL_BASE)) {
+            // The URL is from IEEEXplore.
+            await parseDataIEEE(url, finishedFunc);
+        } else {
+            // The URL is not from a supported site.
+            console.log("Invalid url: " + url);
+            throw new Error("Invalid url: " + url);
+        }
+
+        
     }
 
     /**
