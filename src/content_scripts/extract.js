@@ -109,6 +109,9 @@ function getCiteKeyFromBibtex(bibtex) {
             }
         }
 
+        let venueSource = document.querySelector("div.stats-document-abstract-publishedIn");
+        let venue = venueSource.innerText.replace("Published in: ","");
+
         // Try to grab a publication date. If none exists, use the conference date.
         let dateSource = document.querySelector("div.doc-abstract-pubdate")?.innerHTML;
         if (dateSource == null) {
@@ -146,6 +149,7 @@ function getCiteKeyFromBibtex(bibtex) {
                 title: trimString(title),
                 authors: authors,
                 url: trimString(url),
+                venue: trimString(venue),
                 publicationDate: trimString(date),
                 abstract: trimString(abstract),
                 bibtex: ""
@@ -162,7 +166,7 @@ function getCiteKeyFromBibtex(bibtex) {
 
     /**
      * Listen for messages from the background script.
-     * Call "insertBeast()" or "removeExistingBeasts()".
+     * Call the parse data function.
      */
     browser.runtime.onMessage.addListener(async (message) => {
         if (message.command === "hello") {
@@ -171,5 +175,5 @@ function getCiteKeyFromBibtex(bibtex) {
         else {
             console.log("huh");
         }
-    })
+    });
 })();
