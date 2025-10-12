@@ -14,8 +14,15 @@ function main() {
                 url: tabs[0].url
             })
             .then((response) => {
+                // Encode the properties on the paper data to make it url safe.
+                let paperData = response.response;
+                Object.keys(paperData).forEach((key) => {
+                    paperData[key] = encodeURIComponent(paperData[key]);
+                });
                 // Open the Obsidian app with the paper data encoded into the url.
-                let url = encodeURI(`obsidian://scholar?${JSON.stringify(response.response)}`);
+                // response.response.url = encodeURIComponent(response.response.url);
+                // response.response.bibtex = encodeURIComponent(response.response.bibtex);
+                let url = encodeURI(`obsidian://scholar?paper=${JSON.stringify(paperData)}&source=Helper Extension`);
                 browser.tabs.create({ url: url });
             });
         }
