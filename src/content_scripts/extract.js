@@ -6,6 +6,7 @@
 //
 
 const IEEE_URL_BASE = "https://ieeexplore.ieee.org/";
+const ACM_URL_BASE = "https://dl.acm.org/";
 
 // Functions in this section taken from Obsidian Scholar plugin:
 // https://github.com/lolipopshock/obsidian-scholar
@@ -160,14 +161,123 @@ function getCiteKeyFromBibtex(bibtex) {
         bibTexTab.click();
     }
 
+    // The event handler called when the asynchronous loads reading the content
+    //      depends on have completed. Returns the paper data if the bibtex was
+    //      successfully read, or null otherwise.
+    function finishUpACM(paperData) {
+
+        let bibTexElement = document.querySelector("form input[name=\"content\"]");
+        // Return if the inner source element does not exist. This means the
+        //      finishUp function was caused as the old content unloaded.
+        if (bibTexElement.value[0] != "@") {
+            console.log("Value was not bibtex format. Skipping finishUp call.");
+            return null;
+        }
+
+        let bibtex = bibTexElement.value;
+
+        paperData.bibtex = bibtex;
+        paperData.citekey = getCiteKeyFromBibtex(bibtex);
+        //console.log(paperData);
+
+        return paperData;
+    }
+
+    async function parseDataACM(url, finishedFunc) {
+        
+        let title = document.querySelector("h1[property=\"name\"]")?.innerText;
+        let abstract = document.querySelector("section#abstract div[role=\"paragraph\"]")?.innerText;
+        let authorsSource = document.querySelectorAll("div.contributors span[property=\"author\"] a");
+        let authors = Array.from(authorsSource)
+            .map((a) => a.getAttribute("title"))
+            .filter(element => element); // Remove extra null values.
+
+        // Remove any query parameters from the URL.
+        const urlObj = new URL(url);
+        url = urlObj.origin + urlObj.pathname;
+
+        let venue = document.querySelector("div.core-self-citation div[property=\"isPartOf\"]")?.innerText;
+        let date = document.querySelector(".core-date-published")?.innerText;
+
+        // The export citation modal already exists, but is just hidden.
+        let citationFormatSelect = document.querySelector("select#citation-format");
+        citationFormatSelect.value = "bibtex";
+
+        // The default value of the export citation modal is also bibtex, so the hiddent element
+        //      already contains a value with the bibtex.
+        let bibTexElement = document.querySelector("form input[name=\"content\"]");
+        console.log(bibTexElement);
+
+        // If the bibtex value is not already loaded, trigger and wait for the bibtex to load.
+        if (bibTexElement.value == "") {
+
+            let citeButton = document.querySelector("button[title=\"Export Citation\"]");
+
+            // The bibtex content takes a moment to load. Without delaying the execution,
+            //      the content will not yet exist by the time this code tries to read it.
+            // This sets a mutation observer to watch for changes on the attribute of the
+            //      bibtex element.
+            var observer = new MutationObserver(function(mutationsList, observer) {
+
+                // Create the paper data object.
+                var paperData = {
+                    title: trimString(title),
+                    authors: authors,
+                    url: trimString(url),
+                    venue: trimString(venue),
+                    publicationDate: trimString(date),
+                    abstract: trimString(abstract),
+                    bibtex: ""
+                };
+                // Call the finish up function.
+                var result = finishUpACM(paperData);
+                if (result != null) {
+                    // Stop the observer from listening once the function returns true.
+                    observer.disconnect();
+                    console.log(result);
+                    // Resolve the promise by calling the resolve function.
+                    finishedFunc({ response: result });
+                };
+            });
+            observer.observe(bibTexElement, { characterData: false, childList: false, attributes: true });
+            citeButton.click();
+            return;
+        }
+
+        // The bibtex is already loaded, so simply read the value.
+        let bibtex = bibTexElement.value;
+
+        // Create the paper data object.
+        var paperData = {
+            title: trimString(title),
+            authors: authors,
+            url: trimString(url),
+            venue: trimString(venue),
+            publicationDate: trimString(date),
+            abstract: trimString(abstract),
+            bibtex: bibtex,
+            citekey: getCiteKeyFromBibtex(bibtex)
+        };
+        console.log(paperData);
+        finishedFunc({ response: paperData });
+    }
+
     // Parses paperData from the current page.
     async function parseData(url, finishedFunc) {
 
         // Validate the URL format.
         if (url.toLowerCase().includes(IEEE_URL_BASE)) {
+
             // The URL is from IEEEXplore.
             await parseDataIEEE(url, finishedFunc);
+
+        } else if (url.toLowerCase().includes(ACM_URL_BASE)) {
+
+            // The URL is from ACM Digital Library.
+            await parseDataACM(url, finishedFunc);
+
         } else {
+
             // The URL is not from a supported site.
             console.log("Invalid url: " + url);
             throw new Error("Invalid url: " + url);
