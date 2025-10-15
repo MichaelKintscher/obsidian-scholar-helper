@@ -115,6 +115,16 @@ function getCiteKeyFromBibtex(bibtex) {
         if (dateSource != null) {
             date = dateSource.split("</strong>")[1];
             date = date.split("<xpl-help-link")[0];
+            date = date.trim();
+
+            // If the days are a range (includes a dash before the first space)...
+            if (date.split(" ")[0].includes("-")) {
+
+                // Remove the end date (substring beginning with the dash and ending before the space).
+                var endDateString = date.substring(date.indexOf("-"), date.indexOf(" "));
+                console.log(endDateString);
+                date = date.replace(endDateString, "");
+            }
         }
 
         if (title == undefined) title = "undefined";

@@ -20,9 +20,7 @@ function main() {
                     paperData[key] = encodeURIComponent(paperData[key]);
                 });
                 // Open the Obsidian app with the paper data encoded into the url.
-                // response.response.url = encodeURIComponent(response.response.url);
-                // response.response.bibtex = encodeURIComponent(response.response.bibtex);
-                let url = encodeURI(`obsidian://scholar?paper=${JSON.stringify(paperData)}&source=Helper Extension`);
+                let url = encodeURI(`obsidian://scholar?command=createPaper&paper=${JSON.stringify(paperData)}&source=Helper Extension`);
                 browser.tabs.create({ url: url });
             });
         }
