@@ -1,16 +1,59 @@
+//
+// ***********************************************************************************
+//                      CONSTANTS AND FUNCTIONS 
+//
+// ***********************************************************************************
+//
+
+const IEEE_URL_BASE = "https://ieeexplore.ieee.org/";
+const ACM_URL_BASE = "https://dl.acm.org/";
+
+const ERROR_INVALID_URL = "This site is not supported. Only IEEEXplore and ACM Digital Library are currently supported.";
+
+//
+// ***********************************************************************************
+//                      MAIN FUNCTION
+//
+// ***********************************************************************************
+//
+
 /**
  * Listen for clicks on the buttons, and send the appropriate message to
  * the content script in the page.
  */
 function main() {
+
+    
+    var site = "";
+
+    browser.tabs.query({ active: true, currentWindow: true })
+        .then((tabs) => {
+
+            // Validate the URL is a supported site.
+            if (tabs[0].url.toLowerCase().includes(IEEE_URL_BASE)) {
+
+                // The URL is from IEEEXplore.
+                site = "IEEE";
+
+            } else if (tabs[0].url.toLowerCase().includes(ACM_URL_BASE)) {
+
+                // The URL is from ACM Digital Library.
+                site = "ACM";
+
+            } else {
+
+                // The URL is not from a supported site.
+                throw new Error(ERROR_INVALID_URL);
+            }
+        })
+        .catch(onExecuteScriptError);
+
     // Wire the click event for the button.
     document.addEventListener("click", (e) => {
         // Run the event handler.
-        console.log("hello world");
-
         function onClick(tabs) {
             browser.tabs.sendMessage(tabs[0].id, {
-                command: "hello",
+                command: site,
                 url: tabs[0].url
             })
             .then((response) => {
@@ -42,11 +85,16 @@ function main() {
         browser.tabs
             .query({ active: true, currentWindow: true })
             .then(onClick)
-            .catch(onError);
+            .catch(onExecuteScriptError);
     });
-
-    console.log("hello world");
 }
+
+//
+// ***********************************************************************************
+//                      ERROR HANDLING
+//
+// ***********************************************************************************
+//
 
 /**
  * There was an error executing the script.
@@ -55,10 +103,16 @@ function main() {
 function onExecuteScriptError(error) {
     document.querySelector("#popup-content").classList.add("hidden");
     document.querySelector("#error-content").classList.remove("hidden");
-    console.error(`Failed to execute beastify content script: ${error.message}`);
+    document.querySelector("#error-content").innerHTML = `<p>${error.message}</p>`
+    console.error(`Failed to execute Obsidian Scholar Helper content script: ${error.message}`);
 }
 
-console.log("um");
+//
+// ***********************************************************************************
+//                      SCRIPT ENTRY
+//
+// ***********************************************************************************
+//
 
 /**
  * When the popup loads, inject a content script into the active tab,

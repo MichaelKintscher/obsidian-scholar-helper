@@ -1,12 +1,60 @@
 html,
 body {
-    width: 100px;
+    width: 200px;
+    border: 1px black;
+}
+
+h1,
+p,
+a {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    font-size: small;
 }
 
 .hidden {
     display: none;
 }
 
+#header {
+    border-bottom: 1px solid black;
+}
+
+#header h1 {
+    font-size: large;
+}
+
 button {
+    margin: 5px 0px;
+    padding: 10px 20px;
+    display: block;
+    width: 100%;
+    background-color: #7832f8;
+    border-radius: 8px;
+    border: none;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 100;
+    color: #ffffff;
+    box-shadow: 0 3px #999;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: #6e2ee4;
+}
+
+button:active {
+    background-color: #652ad1;
+    box-shadow: 0 1px #999;
+    transform: translateY(2px);
+}
+
+#help {
+    border-top: 1px solid black;
+    padding-top: 8px;
+    padding-bottom: 3px;
+    margin-top: 8px;
 }

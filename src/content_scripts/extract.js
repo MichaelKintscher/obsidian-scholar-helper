@@ -5,9 +5,6 @@
 // ***********************************************************************************
 //
 
-const IEEE_URL_BASE = "https://ieeexplore.ieee.org/";
-const ACM_URL_BASE = "https://dl.acm.org/";
-
 // Functions in this section taken from Obsidian Scholar plugin:
 // https://github.com/lolipopshock/obsidian-scholar
 // This is to ensure the output matches exactly the data formats the plugin works with.
@@ -269,31 +266,7 @@ function getCiteKeyFromBibtex(bibtex) {
             citekey: getCiteKeyFromBibtex(bibtex)
         };
         console.log(paperData);
-        finishedFunc({ response: paperData });
-    }
-
-    // Parses paperData from the current page.
-    async function parseData(url, finishedFunc) {
-
-        // Validate the URL format.
-        if (url.toLowerCase().includes(IEEE_URL_BASE)) {
-
-            // The URL is from IEEEXplore.
-            await parseDataIEEE(url, finishedFunc);
-
-        } else if (url.toLowerCase().includes(ACM_URL_BASE)) {
-
-            // The URL is from ACM Digital Library.
-            await parseDataACM(url, finishedFunc);
-
-        } else {
-
-            // The URL is not from a supported site.
-            console.log("Invalid url: " + url);
-            throw new Error("Invalid url: " + url);
-        }
-
-        
+        finishedFunc({ response: paperData, status: "ok" });
     }
 
     /**
@@ -301,14 +274,20 @@ function getCiteKeyFromBibtex(bibtex) {
      * Call the parse data function.
      */
     browser.runtime.onMessage.addListener((message) => {
-        if (message.command === "hello") {
+        if (message.command === "IEEE") {
             return new Promise((finished, rejected) => {
                 
-                parseData(message.url, finished);
+                parseDataIEEE(message.url, finished);
+            });
+        } else if (message.command === "ACM") {
+
+            return new Promise((finished, rejected) => {
+                
+                parseDataACM(message.url, finished);
             });
         }
         else {
-            console.log("huh");
+            console.error("Invalid command received from browser extension.");
         }
     });
 })();
