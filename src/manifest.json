@@ -9,12 +9,11 @@
         "96": "icons/icon_96.svg"
     },
     "permissions": [
-        "activeTab",
-        "downloads"
+        "activeTab"
     ],
     "page_action": {
         "default_icon": "icons/icon_32.svg",
-        "default_title": "Obsidian Scholar Helper",
+        "default_title": "Open Obsidian Scholar Helper",
         "default_popup": "popup/extract_paper.html",
         "show_matches": [
             "https://dl.acm.org/*",
