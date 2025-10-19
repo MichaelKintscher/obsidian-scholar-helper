@@ -12,6 +12,11 @@
         "scripting",
         "activeTab"
     ],
+    "background": {
+        "scripts": [
+            "main.js"
+        ]
+    },
     "page_action": {
         "default_icon": "icons/icon_32.svg",
         "default_title": "Open Obsidian Scholar Helper",
