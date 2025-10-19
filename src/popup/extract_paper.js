@@ -23,7 +23,6 @@ const ERROR_INVALID_URL = "This site is not supported. Only IEEEXplore and ACM D
  */
 function main() {
 
-    
     var site = "";
 
     browser.tabs.query({ active: true, currentWindow: true })
@@ -91,6 +90,25 @@ function main() {
 
 //
 // ***********************************************************************************
+//                      CONTENT SCRIPT INJECTION
+//
+// ***********************************************************************************
+//
+
+function injectScript(tabs) {
+    // Inject the script.
+    browser.scripting.executeScript({
+        target: {
+            tabId: tabs[0].id
+        },
+        files: ["/content_scripts/extract.js"]
+    });
+    
+    return;
+}
+
+//
+// ***********************************************************************************
 //                      ERROR HANDLING
 //
 // ***********************************************************************************
@@ -120,6 +138,7 @@ function onExecuteScriptError(error) {
  * If we couldn't inject the script, handle the error.
  */
 browser.tabs
-    .executeScript({ file: "/content_scripts/extract.js" })
+    .query({ active: true, currentWindow: true })
+    .then(injectScript)
     .then(main)
     .catch(onExecuteScriptError);
