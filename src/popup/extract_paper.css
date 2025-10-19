@@ -1,61 +1,58 @@
 html,
 body {
-    width: 200px;
-    border: 1px black;
+    width: 300px;
 }
 
-h1,
-p,
-a {
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-a {
+a:hover {
     text-decoration: none;
-    font-size: small;
 }
 
 .hidden {
     display: none;
 }
 
-#header {
+/**
+******************************************************
+**              TITLE BAR
+**
+******************************************************
+*/
+
+#page-title {
+    padding: 8px 0px;
     border-bottom: 1px solid black;
 }
 
-#header h1 {
-    font-size: large;
+#page-title img {
+    width: 20px;
+    margin: 0px 10px;
+}
+
+#header-bar h1 {
+    font-size: medium;
+    margin-bottom: 0px;
+}
+
+/**
+******************************************************
+**              MAIN CONTENT
+**
+******************************************************
+*/
+
+#popup-content {
+    margin-bottom: 10px;
 }
 
 button {
-    margin: 5px 0px;
-    padding: 10px 20px;
     display: block;
     width: 100%;
-    background-color: #7832f8;
-    border-radius: 8px;
-    border: none;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: 100;
-    color: #ffffff;
-    box-shadow: 0 3px #999;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #6e2ee4;
-}
-
-button:active {
-    background-color: #652ad1;
-    box-shadow: 0 1px #999;
-    transform: translateY(2px);
+    background-color: #7832f8 !important;
 }
 
 #help {
-    border-top: 1px solid black;
     padding-top: 8px;
-    padding-bottom: 3px;
+    padding-bottom: 10px;
     margin-top: 8px;
     font-size: small;
 }
