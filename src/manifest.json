@@ -12,9 +12,13 @@
         "activeTab",
         "downloads"
     ],
-    "browser_action": {
+    "page_action": {
         "default_icon": "icons/icon_32.svg",
         "default_title": "Obsidian Scholar Helper",
-        "default_popup": "popup/extract_paper.html"
+        "default_popup": "popup/extract_paper.html",
+        "show_matches": [
+            "https://dl.acm.org/*",
+            "https://ieeexplore.ieee.org/*"
+        ]
     }
 }
