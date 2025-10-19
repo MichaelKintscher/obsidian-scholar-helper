@@ -20,11 +20,31 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Getting Started</h5>
-                    <p>This extension requires Obsidian and the Obsidian Scholar plugin to work. Make sure you have everything set up to import papers into your library.</p>
+                    <p>This browser extension requires Obsidian and the Obsidian Scholar plugin to work. Make sure you have everything set up to import papers into your library. This is a one-time setup.</p>
                     <ol class="list-group list-group-numbered">
-                        <li class="list-group-item">Install <a href="https://obsidian.md/" target="_blank">Obsidian</a></li>
-                        <li class="list-group-item">Install <a href="https://github.com/MichaelKintscher/obsidian-scholar" target="_blank">Scholar community plugin (forked version)</a></li>
-                        <li class="list-group-item">Configure your library</li>
+                        <li class="list-group-item d-flex">
+                            <div class="ms-2">
+                                <div class="fw-bold">
+                                    Install <a href="https://obsidian.md/" target="_blank">Obsidian</a>
+                                </div>
+                            </div>
+                        </li>
+                    <li class="list-group-item d-flex">
+                            <div class="ms-2">
+                                <div class="fw-bold">
+                                    Install <a href="https://github.com/MichaelKintscher/obsidian-scholar/tree/dev-create-note-paperdata" target="_blank">Scholar community plugin (forked version)</a>
+                                </div>
+                                This extension is used with the Obsidian Scholar plugin, but depends on functionality that has not yet been pulled into the main plugin (you can track the status of the pull request <a href="https://github.com/lolipopshock/obsidian-scholar/pull/34" target="_blank">here</a>). For now, you will need to install the forked version manually (instructions in the github readme).
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex">
+                            <div class="ms-2">
+                                <div class="fw-bold">
+                                    Configure your library
+                                </div>
+                                In the Obsidian Scholar settings, Make sure you set the "Note folder" and "PDF folder" settings set.
+                            </div>
+                        </li>
                     </ol>
                     <p>Now you are ready to start importing papers!</p>
                 </div>
@@ -36,10 +56,31 @@
                     <h5 class="card-title">Using Obsidian Scholar Helper</h5>
                     <p>Make sure you have everything set up to import papers into your library.</p>
                     <ol class="list-group list-group-numbered">
-                        <li class="list-group-item">Navigate to web page with the paper you want to import.</li>
-                        <li class="list-group-item">Open the extension and click "Send paper to Obsidian".</li>
+                        <li class="list-group-item d-flex">
+                            <div class="ms-2">
+                                <div class="fw-bold">
+                                    Navigate to web page with the paper you want to import.
+                                </div>
+                                <div>
+                                    The extension will only work on the following supported websites:
+                                </div>
+                                <div id="supported-sites-links">
+                                    <a href="https://dl.acm.org/" target="_blank" class="card-link">ACM Digital Library</a>
+                                    <a href="https://ieeexplore.ieee.org/" target="_blank" class="card-link">IEEE <i>Xplore</i></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex">
+                            <div class="ms-2">
+                                <div class="fw-bold">
+                                    Open the extension and click "Send paper to Obsidian".
+                                </div>
+                                Your browser may prompt you asking for permission to open the obsidian link with an external program. You will need to say yes.
+                            </div>
+                        </li>
                     </ol>
-                    <p>The paper data will be added to your library, the same as if you had used the "Add paper to Library" command in the Obsidian Scholar plugin.</p>
+                    <p>The paper data will be added to your library, the same as if you had used the "Scholar: Add paper to Library" command in the Obsidian Scholar plugin. You can now use the Obsidian Scholar plugin with the imported paper!</p>
+                    <p><strong>Note:</strong> The Helper extension does not currently support importing PDFs. You will need to download the paper PDF yourself, and then manually add it to the paper after importing the paper into your library. You can do so with the "Scholar: Add Paper PDF" command in Obsidian.</p>
                 </div>
             </div>
 
@@ -49,7 +90,7 @@
                     <h5 class="card-title">Getting Help</h5>
                     <p class="card-text">You can always click "Extension Help" to return to this page.</p>
                     <a href="https://github.com/MichaelKintscher/obsidian-scholar-helper" target="_blank" class="card-link">Extension Github</a>
-                    <a href="https://github.com/MichaelKintscher/obsidian-scholar" target="_blank" class="card-link">Obsidian Scholar (fork)</a>
+                    <a href="https://github.com/MichaelKintscher/obsidian-scholar/tree/dev-create-note-paperdata" target="_blank" class="card-link">Obsidian Scholar (fork)</a>
                     <a href="https://github.com/lolipopshock/obsidian-scholar" target="_blank" class="card-link">Obsidian Scholar (main)</a>
                     <a href="https://help.obsidian.md/" target="_blank" class="card-link">Obsidian Help</a>
                     <a href="https://obsidian.md/" target="_blank" class="card-link">Obsidian.md</a>
@@ -62,6 +103,11 @@
                     <h5 class="card-title">Acknowledgements</h5>
                     <p class="card-text">This extension is only possible because of the fantastic work on the original <a href="https://github.com/lolipopshock/obsidian-scholar" target="_blank">Obsidian Scholar plugin</a>!</p>
                 </div>
+            </div>
+
+            <!-- Version number -->
+            <div>
+                <p><small>Obsidian Scholar Helper Version 1.0</small></p>
             </div>
         </div>
     </div>

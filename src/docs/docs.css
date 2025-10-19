@@ -5,3 +5,11 @@
 div.card {
     margin-bottom: 15px;
 }
+
+.card-body > ol {
+    margin-bottom: 10px;
+}
+
+#supported-sites-links {
+    margin: 5px 0px;
+}
