@@ -47,7 +47,25 @@ div.off-card-text {
 }
 
 p.lead {
-    margin: 30px 0px;
+    margin: 0px;
+}
+
+#content-intro {
+    padding: 30px 0px;
+}
+
+#theme-toggle-btn {
+    width: auto;
+    height: auto;
+    margin: 0px 12px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#theme-toggle-btn img {
+    width: 20px;
 }
 
 /**

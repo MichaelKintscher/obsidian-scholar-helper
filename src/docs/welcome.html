@@ -3,18 +3,18 @@
 <head>
     <title>Obsidian Scholar Helper</title>
     <link rel="stylesheet" href="docs.css" />
-    <script type="module" src="extract_paper.js"></script>
+    <script type="module" src="docs.js"></script>
 
     <!-- Bootstrap -->
      <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
      <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
+<body data-bs-theme="dark">
     <div id="header-bar">
         <div class="container">
             <div class="row">
                 <div id="page-title" class="d-flex align-items-center">
-                    <img src="../icons/icon_96.svg" />
+                    <img id="logo-img" src="../icons/icon_96.svg" />
                     <h1 class="display-6">Obsidian Scholar Helper</h1>
                 </div>
             </div>
@@ -25,8 +25,11 @@
         <div class="container">
             <div class="row">
 
-                <div class="off-card-text">
+                <div id="content-intro" class="off-card-text d-flex justify-content-between">
                     <p class="lead">Welcome to the Obsidian Scholar Helper extension!</p>
+                    <button id="theme-toggle-btn" class="btn btn-outline-secondary">
+                        <img id="theme-toggle-img" src="../icons/light_mode.svg" />
+                    </button>
                 </div>
 
                 <!-- Getting Started card -->

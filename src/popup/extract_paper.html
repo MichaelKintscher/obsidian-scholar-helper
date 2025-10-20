@@ -9,14 +9,19 @@
      <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
      <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
+<body data-bs-theme="dark">
 
     <div id="header-bar">
         <div class="container">
             <div class="row">
-                <div id="page-title" class="d-flex align-items-center justify-content-left">
-                    <img src="../icons/icon_48.svg" />
-                    <h1>Obsidian Scholar Helper</h1>
+                <div id="page-title" class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <img id="logo-img" src="../icons/icon_96.svg" />
+                        <h1>Obsidian Scholar Helper</h1>
+                    </div>
+                    <button id="theme-toggle-btn" class="btn btn-outline-secondary">
+                        <img id="theme-toggle-img" src="../icons/light_mode.svg" />
+                    </button>
                 </div>
 
                 <div id="main-content">
@@ -26,7 +31,7 @@
                     </div>
                     <div id="help">
                         <p>Click the button to send the paper displayed on the current page to the Obsidian Scholar extension to add to your library.</p>
-                        <a href="../docs/welcome.html" target="_blank">Extension Help</a>
+                        <a id="help-link" href="../docs/welcome.html" target="_blank">Extension Help</a>
                     </div>
                     <!-- Main popup content. -->
                     <div id="popup-content">

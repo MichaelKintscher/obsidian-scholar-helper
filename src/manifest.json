@@ -8,9 +8,15 @@
         "48": "icons/icon_48.svg",
         "96": "icons/icon_96.svg"
     },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "@obsidian-scholar-helper.kintscher.dev"
+        }
+    },
     "permissions": [
         "scripting",
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
     "background": {
         "scripts": [
