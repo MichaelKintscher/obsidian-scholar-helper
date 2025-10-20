@@ -5,10 +5,10 @@
 // ***********************************************************************************
 //
 
-const IEEE_URL_BASE = "https://ieeexplore.ieee.org/";
-const ACM_URL_BASE = "https://dl.acm.org/";
+// const IEEE_URL_BASE = "https://ieeexplore.ieee.org/";
+// const ACM_URL_BASE = "https://dl.acm.org/";
 
-const ERROR_INVALID_URL = "This site is not supported. Only IEEEXplore and ACM Digital Library are currently supported.";
+// const ERROR_INVALID_URL = "This site is not supported. Only IEEEXplore and ACM Digital Library are currently supported.";
 
 const URL_ICON_LIGHT_MODE = "../icons/dark_mode.svg";
 const URL_ICON_DARK_MODE = "../icons/light_mode.svg";
@@ -30,88 +30,16 @@ const HELP_LINK_BASE = "../docs/welcome.html";
  */
 function main() {
 
-    var site = "";
-
-    browser.tabs.query({ active: true, currentWindow: true })
-        .then((tabs) => {
-
-            // Validate the URL is a supported site.
-            if (tabs[0].url.toLowerCase().includes(IEEE_URL_BASE)) {
-
-                // The URL is from IEEEXplore.
-                site = "IEEE";
-
-            } else if (tabs[0].url.toLowerCase().includes(ACM_URL_BASE)) {
-
-                // The URL is from ACM Digital Library.
-                site = "ACM";
-
-            } else {
-
-                // The URL is not from a supported site.
-                throw new Error(ERROR_INVALID_URL);
-            }
-        })
-        .catch(onExecuteScriptError);
-
     // Wire the click event for the button.
     document.addEventListener("click", (e) => {
-        // Run the event handler.
-        function onClick(tabs) {
-            browser.tabs.sendMessage(tabs[0].id, {
-                command: site,
-                url: tabs[0].url
-            })
-            .then((response) => {
-                // Encode the properties on the paper data to make it url safe.
-                let paperData = response.response;
-                Object.keys(paperData).forEach((key) => {
-                    paperData[key] = encodeURIComponent(paperData[key]);
-                });
-                // Open the Obsidian app with the paper data encoded into the url.
-                let url = encodeURI(`obsidian://scholar?command=createPaper&paper=${JSON.stringify(paperData)}&source=Helper Extension`);
-                browser.tabs.create({ url: url });
-            });
-        }
 
-        function onError() {
-            console.log("oops");
-        }
-
-        
         if (e.target.tagName !== "BUTTON" || !e.target.closest("#popup-content")) {
             // Ignore when click is not on a button within <div id="popup-content">.
             return;
         }
 
-        /**
-         * Get the active tab,
-         * then call the click function as appropriate.
-         */
-        browser.tabs
-            .query({ active: true, currentWindow: true })
-            .then(onClick)
-            .catch(onExecuteScriptError);
+        browser.runtime.sendMessage({ message: "send-to-obsidian" });
     });
-}
-
-//
-// ***********************************************************************************
-//                      CONTENT SCRIPT INJECTION
-//
-// ***********************************************************************************
-//
-
-function injectScript(tabs) {
-    // Inject the script.
-    browser.scripting.executeScript({
-        target: {
-            tabId: tabs[0].id
-        },
-        files: ["/content_scripts/extract.js"]
-    });
-    
-    return;
 }
 
 //
@@ -185,20 +113,4 @@ getThemeAsync()
     .then(updateTheme)
     .catch(onExecuteScriptError);
 
-//
-// ***********************************************************************************
-//                      SCRIPT ENTRY
-//
-// ***********************************************************************************
-//
-
-/**
- * When the popup loads, inject a content script into the active tab,
- * and add a click handler.
- * If we couldn't inject the script, handle the error.
- */
-browser.tabs
-    .query({ active: true, currentWindow: true })
-    .then(injectScript)
-    .then(main)
-    .catch(onExecuteScriptError);
+main();

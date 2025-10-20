@@ -20,7 +20,7 @@
     ],
     "background": {
         "scripts": [
-            "main.js"
+            "background.js"
         ]
     },
     "page_action": {
@@ -31,5 +31,13 @@
             "https://dl.acm.org/*",
             "https://ieeexplore.ieee.org/*"
         ]
+    },
+    "commands": {
+        "send-to-obsidian": {
+            "suggested_key": {
+                "default": "Ctrl+Alt+O"
+            },
+            "description": "Send the current paper to Obsidian Scholar"
+        }
     }
 }
