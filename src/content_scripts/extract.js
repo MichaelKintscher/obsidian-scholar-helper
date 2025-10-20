@@ -85,6 +85,11 @@ function getCiteKeyFromBibtex(bibtex) {
         //      not rendered until after the accordion tab is opened.
         if (document.querySelector("div#authors") == undefined) {
             let authorAccordionButton = document.querySelector("button#authors");
+
+            if (authorAccordionButton == null) {
+                throw new Error("Looks like this isn't a paper page!");
+            }
+
             authorAccordionButton.click();
         }
 
@@ -213,12 +218,15 @@ function getCiteKeyFromBibtex(bibtex) {
         // The default value of the export citation modal is also bibtex, so the hiddent element
         //      already contains a value with the bibtex.
         let bibTexElement = document.querySelector("form input[name=\"content\"]");
-        console.log(bibTexElement);
 
         // If the bibtex value is not already loaded, trigger and wait for the bibtex to load.
         if (bibTexElement.value == "") {
 
             let citeButton = document.querySelector("button[title=\"Export Citation\"]");
+
+            if (citeButton == null) {
+                throw new Error("Looks like this isn't a paper page!");
+            }
 
             // The bibtex content takes a moment to load. Without delaying the execution,
             //      the content will not yet exist by the time this code tries to read it.
@@ -269,6 +277,28 @@ function getCiteKeyFromBibtex(bibtex) {
         finishedFunc({ response: paperData, status: "ok" });
     }
 
+    function onError(error) {
+        console.log("oops. " + error.message);
+
+        let node = document.getElementById("obsidian-scholar-helper-alert");
+        if (node == undefined) {
+            node = document.createElement("div");
+            node.setAttribute("id", "obsidian-scholar-helper-alert");
+        }
+
+        const nodeStyle = `position: fixed; margin: 20px auto; max-width: 600px; z-index: 10000; top: 0px; left: 0px; right: 0px; padding: 20px; background-color: #7832f8; color: white; opacity: 1; transition: opacity 4s cubic-bezier(0.7, 0, 0.84, 0);`;
+        const btnStyle = `margin-left: 15px; color: white; font-weight: bold; float: right; font-size: 22px; line-height: 20px; cursor: pointer; transition: 0.3s;`;
+        node.setAttribute("style", nodeStyle);
+        node.setAttribute("class", "obsidian-scholar-helper-alert");
+        node.innerHTML = `<span class="closebtn" style="${btnStyle}" onclick="this.parentElement.style.display='none';">&times;</span><strong>Oops!</strong> ${error.message}`;
+        document.body.appendChild(node);
+
+        setTimeout(() => {
+            node.style.opacity = 0;
+            node.addEventListener("transitionend", () => node.remove());
+        }, 200)
+    }
+
     /**
      * Listen for messages from the background script.
      * Call the parse data function.
@@ -277,13 +307,15 @@ function getCiteKeyFromBibtex(bibtex) {
         if (message.command === "IEEE") {
             return new Promise((finished, rejected) => {
                 
-                parseDataIEEE(message.url, finished);
+                parseDataIEEE(message.url, finished)
+                    .catch(onError);
             });
         } else if (message.command === "ACM") {
 
             return new Promise((finished, rejected) => {
                 
-                parseDataACM(message.url, finished);
+                parseDataACM(message.url, finished)
+                    .catch(onError);
             });
         }
         else {
