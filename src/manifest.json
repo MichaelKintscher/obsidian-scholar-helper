@@ -10,7 +10,10 @@
     },
     "browser_specific_settings": {
         "gecko": {
-            "id": "@obsidian-scholar-helper.kintscher.dev"
+            "id": "@obsidian-scholar-helper.kintscher.dev",
+            "data_collection_permissions": {
+                "required": ["websiteContent"]
+            }
         }
     },
     "permissions": [
