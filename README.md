@@ -1,6 +1,6 @@
 # Obsidian Scholar Helper
 
-A browser extension to help add papers to your Obsidian paper library to be managed with the Obsidian Scholar Plugin for Obsidian.
+A browser extension to help add papers to your Obsidian paper library to be managed with the Obsidian Scholar Plugin for Obsidian. I created this extension to support academics and researchers like myself. I hope you find it useful!
 
 ## Overview
 
@@ -88,6 +88,24 @@ The paper data will be added to your library, the same as if you had used the `S
 
 > **Note:** The Helper extension does not currently support importing PDFs. You will need to download the paper PDF yourself, and then manually add it to the paper after importing the paper into your library. You can do so with the "Scholar: Add Paper PDF" command in Obsidian.
 
+## Technologies Used
+
+This extension uses the following:
+
+- HTML 5
+- CSS
+- JavaScript
+- [Bootstrap](https://getbootstrap.com/)
+- [Google Material Icons](https://fonts.google.com/icons) (for several app icons)
+
+## Contributing
+
+You are welcome to contribute! Feel free to open a pull request, or open an issue for feature requests or bug fixes.
+
 ## Acknowledgements
 
 This extension is only possible because of the fantastic work on the original [Obsidian Scholar plugin](https://github.com/lolipopshock/obsidian-scholar)!
+
+## License
+
+This project is licensed under the MIT License.
