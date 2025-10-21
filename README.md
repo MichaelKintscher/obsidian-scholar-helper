@@ -2,6 +2,8 @@
 
 A browser extension to help add papers to your Obsidian paper library to be managed with the Obsidian Scholar Plugin for Obsidian. I created this extension to support academics and researchers like myself. I hope you find it useful!
 
+**This extension currently supports Firefox. Mobile is not supported.**
+
 ## Overview
 
 This browser extension adds another way to send papers to your Obsidian Scholar paper library. The [Obsidian Scholar plugin](https://github.com/lolipopshock/obsidian-scholar) currently supports ArXiv and Semantic Scholar, both of which provide APIs that Obsidian Scholar uses to import papers.
