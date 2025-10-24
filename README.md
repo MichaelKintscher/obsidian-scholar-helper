@@ -40,7 +40,11 @@ In the Obsidian Scholar settings, make sure you set the "Note folder" and "PDF f
 
 ## Installation
 
-This extension has been submitted to [addons.mozilla.org](https://addons.mozilla.org/) for approval to be listed. Until then, you can install the extension yourself using the following steps.
+This extension can be downloaded and installed from [addons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/obsidian-scholar-helper/).
+
+>**Note:** The following installation steps are not necessary if you just want to use the published version of the addon.
+
+If you want to modify and test the code yourself, you can install your version of the extension as a temporary addon using the following steps. You can find more details in [Firefox's documentation](https://firefox-source-docs.mozilla.org/devtools-user/about_colon_debugging/index.html).
 
 ### 1. Fork this github repository, or download the files.
 
@@ -51,8 +55,6 @@ You will need the full repository. If you fork the repository, you can still rec
 1. Either type `about:debugging` into the URL bar, or go to `Tools > Browser Tools > Remote Debugging`.
 2. From there, click on `This Firefox`.
 
-You can find the steps on [Firefox's documentation](https://firefox-source-docs.mozilla.org/devtools-user/about_colon_debugging/index.html).
-
 ### 3. Load a temporary extension.
 
 1. Click the button `Load Temporary Add-on...`.
@@ -61,7 +63,7 @@ You can find the steps on [Firefox's documentation](https://firefox-source-docs.
 
 Obsidian Scholar Helper should now appear as a temporary add-on, and is ready for use!
 
-> **Note:** Steps 2 and 3 will need to be repeated each time you restart Firefox. This will be resolved once the extension is signed by Mozila.
+> **Note:** Steps 2 and 3 will need to be repeated each time you restart Firefox.
 
 ## Using the extension
 
@@ -102,7 +104,7 @@ This extension uses the following:
 
 ## Contributing
 
-You are welcome to contribute! Feel free to open a pull request, or open an issue for feature requests or bug fixes.
+You are welcome to contribute! Feel free to open a pull request, or open an issue for feature requests or bug fixes. If you do contribute, please make sure that your contributions adhere to the [Firefox Add-on Policies](https://extensionworkshop.com/documentation/publish/add-on-policies/).
 
 ## Acknowledgements
 
